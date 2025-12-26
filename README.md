@@ -78,7 +78,9 @@ By rightclicking on the board, advanced, edit lua parameters, you can customize 
 - `screenTitle8`: the title display on the 8th screen, not displayed if empty or equal to "-"
 - `screenTitle9`: the title display on the 9th screen, not displayed if empty or equal to "-"
 - `containerProficiencyLvl`: Talent level for Container Proficiency
+- `containerProficiencyModifier`: Modifier applied by each level of the talent Container Proficiency
 - `containerOptimizationLvl`: Talent level for Container Optimization
+- `containerOptimizationModifier`: Modifier applied by each level of the talent Container Optimization
 - `groupByItemName`: if enabled, this will group all entries with the same item name (enabled by default)
 - `VolumeRoundedDecimals`: maximum of decimals displayed for the volume value
 - `QuantityRoundedDecimals`: maximum of decimals displayed for the quantity value

@@ -24,7 +24,10 @@ screenTitle8 = "-" --export: the title display on the 8th screen, not displayed 
 screenTitle9 = "-" --export: the title display on the 9th screen, not displayed if empty or equal to "-"
 
 containerProficiencyLvl = 5 --export: Talent level for Container Proficiency
+containerProficiencyModifier = 0.1 --export: Modifier applied by each level of the talent Container Proficiency
 containerOptimizationLvl = 5 --export: Talent level for Container Optimization
+containerOptimizationModifier = 0.05 --export: Modifier applied by each level of the talent Container Optimization
+
 groupByItemName = true --export: if enabled, this will group all entries with the same item name
 
 VolumeRoundedDecimals = 2 --export: maximum of decimals displayed for the volume value
@@ -35,11 +38,11 @@ maxAmountOfElementsLoadedByTick = 5000 --export: the maximum number of element l
 maxAmountOfElementsRefreshedByTick = 200 --export: the maximum number of element refreshed by tick of the coroutine when refreshing values
 
 showTierColors=true --export: show a diffenrent color for each tier (https://du-lua.dev/#/utils for help on the color values)
-T1Color= '0.43,0.65,0.71' --export: the rgb values for the T2 color (https://du-lua.dev/#/utils for help on the color values)
-T2Color= '0.14,0.7,0.3' --export: the rgb values for the T2 color (https://du-lua.dev/#/utils for help on the color values)
-T3Color= '0.26,0.63,1' --export: the rgb values for the T2 color (https://du-lua.dev/#/utils for help on the color values)
-T4Color= '0.66,0.28,0.66' --export: the rgb values for the T2 color (https://du-lua.dev/#/utils for help on the color values)
-T5Color= '1,0.62,0.24' --export: the rgb values for the T2 color (https://du-lua.dev/#/utils for help on the color values)
+T1Color= '0.43,0.65,0.71' --export: the rgb values for the T2 color
+T2Color= '0.14,0.7,0.3' --export: the rgb values for the T2 color
+T3Color= '0.26,0.63,1' --export: the rgb values for the T2 color
+T4Color= '0.66,0.28,0.66' --export: the rgb values for the T2 color
+T5Color= '1,0.62,0.24' --export: the rgb values for the T2 color
 showTierOnName = true --export: show the tier of the item with the item name
 showVolume = true --export: show or hide the column Volume
 volumePosition= 55 --export: the position in percent of width for the column Volume
@@ -54,7 +57,7 @@ defaultSorting = "none" --export: the default sorting of items on the screen: "n
 	INIT
 ]]
 
-local version = '4.10.0'
+local version = '4.11.0'
 
 system.print("----------------------------------")
 system.print("DU-Storage-Monitoring version " .. version)
@@ -80,7 +83,9 @@ options.screenTitle7 = screenTitle7
 options.screenTitle8 = screenTitle8
 options.screenTitle9 = screenTitle9
 options.container_proficiency_lvl = containerProficiencyLvl
+options.container_proficiency_modifier = containerProficiencyModifier
 options.container_optimization_lvl = containerOptimizationLvl
+options.container_optimization_modifier = containerOptimizationModifier
 options.groupByItemName = groupByItemName
 options.VolumeRoundedDecimals = VolumeRoundedDecimals
 options.QuantityRoundedDecimals = QuantityRoundedDecimals
@@ -240,7 +245,7 @@ function getRenderScript(data, screenTitle)
         ]]
     else
         rs = rs .. 'items=' .. data .. [[
-
+        
         ]]
         if screenTitle ~= nil then
             rs = rs .. "screenTitle='" .. screenTitle .. [['
@@ -582,27 +587,27 @@ MyCoroutines = {
                             if containerMaxHP > 68000 then
                                 container_size = "XXL"
                                 container_empty_mass = 88410
-                                container_volume = 512000 * (options.container_proficiency_lvl * 0.1) + 512000
+                                container_volume = 512000 * (options.container_proficiency_lvl * options.container_proficiency_modifier) + 512000
                             elseif containerMaxHP > 33000 then
                                 container_size = "XL"
                                 container_empty_mass = 44210
-                                container_volume = 256000 * (options.container_proficiency_lvl * 0.1) + 256000
+                                container_volume = 256000 * (options.container_proficiency_lvl * options.container_proficiency_modifier) + 256000
                             elseif containerMaxHP > 17000 then
                                 container_size = "L"
                                 container_empty_mass = 14842.7
-                                container_volume = 128000 * (options.container_proficiency_lvl * 0.1) + 128000
+                                container_volume = 128000 * (options.container_proficiency_lvl * options.container_proficiency_modifier) + 128000
                             elseif containerMaxHP > 7900 then
                                 container_size = "M"
                                 container_empty_mass = 7421.35
-                                container_volume = 64000 * (options.container_proficiency_lvl * 0.1) + 64000
+                                container_volume = 64000 * (options.container_proficiency_lvl * options.container_proficiency_modifier) + 64000
                             elseif containerMaxHP > 900 then
                                 container_size = "S"
                                 container_empty_mass = 1281.31
-                                container_volume = 8000 * (options.container_proficiency_lvl * 0.1) + 8000
+                                container_volume = 8000 * (options.container_proficiency_lvl * options.container_proficiency_modifier) + 8000
                             else
                                 container_size = "XS"
                                 container_empty_mass = 229.09
-                                container_volume = 1000 * (options.container_proficiency_lvl * 0.1) + 1000
+                                container_volume = 1000 * (options.container_proficiency_lvl * options.container_proficiency_modifier) + 1000
                             end
                         else
                             if splitted[3] then
@@ -617,7 +622,7 @@ MyCoroutines = {
                             if container_volume_list[container_size] then
                                 volume = container_volume_list[container_size]
                             end
-                            container_volume = (volume * options.container_proficiency_lvl * 0.1 + volume) * tonumber(container_amount)
+                            container_volume = (volume * options.container_proficiency_lvl * options.container_proficiency_modifier + volume) * tonumber(container_amount)
                             container_empty_mass = 55.8
                         end
                         local totalMass = core.getElementMassById(id)
@@ -628,7 +633,7 @@ MyCoroutines = {
                         container.prefix = splitted[1] .. "_"
                         container.name = name
                         container.ingredient = ingredient
-                        container.quantity = contentMassKg / (ingredient.unitMass - (ingredient.unitMass * (options.container_optimization_lvl * 0.05)))
+                        container.quantity = contentMassKg / (ingredient.unitMass - (ingredient.unitMass * (options.container_optimization_lvl * options.container_optimization_modifier)))
                         container.maxvolume = container_volume
                         container.percent = utils.round((ingredient.unitVolume * container.quantity) * 100 / container_volume)
                         if ingredient.name == "InvalidItem" then
